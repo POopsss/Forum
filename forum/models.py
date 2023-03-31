@@ -7,7 +7,7 @@ class FUser(models.Model):
     email = models.OneToOneField(User, on_delete=models.CASCADE)
     userpost = models.ForeignKey('Post', on_delete=models.CASCADE)
     usercomment = models.ForeignKey('Comment', on_delete=models.CASCADE)
-    # like = models.ForeignKey()
+    like = models.ManyToManyField('Post', through='PostLike')
 
 
 class Post(models.Model):
@@ -23,4 +23,6 @@ class Comment(models.Model):
     text = models.TextField()
 
 
-class Like(models.Model):
+class PostLike(models.Model):
+    userlike = models.ForeignKey(FUser, on_delete=models.CASCADE)
+    postlike = models.ForeignKey(Post, on_delete=models.CASCADE)
