@@ -2,26 +2,41 @@
 {% endblock title %}
 
 {% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ like }}
+        <input type="submit" value="Set">
+    </form>
+
+        <form action="" method="POST">
+        {% csrf_token %}
+        {{ rating }}
+        <input type="submit" value="Set">
+    </form>
+
+
+    Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ post.author }}
+    Дата: {{ post.data }}
+    <hr/>
     {{ post.title }}
     <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small>
     {{ post.text|safe }}
+
+    Рейтинг: {{ post.rating }}
     <hr/>
-    Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="26" height="26"/> {{ post.author }}
-    <hr/>
-    {{ post.rating }}
-    <hr/>
-    Комментарии
-    {% for comment in post.comment.all %}
+    Комментарии:<hr/>
+    {% for q in now %}
         <table>
             <tr>
-                <hr/>
-            <img src="/media/{{ comment.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ comment.author }}
-                <hr/>
-            {{ comment.text }}
-                <hr/>
-            {{ comment.like }}
-                <hr/>
-            <tr/>
+                <td><img src="/media/{{ q.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ q.author}}</td>
+            </tr>
+            <tr>
+                <td>{{ q.text }}</td>
+            </tr>
+            <tr>
+                <td>{{ q.like }}</td>
+            </tr>
         </table>
+        <hr/>
     {% endfor %}
 {% endblock %}

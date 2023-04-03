@@ -28,8 +28,8 @@ class Post(models.Model):
         self.rating = self.rating / len(PostRating.objects.all().filter(post_id=self.id))
         self.save()
 
-    def __str__(self):
-        return f'{self.title}: {self.text}'
+    # def __str__(self):
+    #     return f'{self.title}: {self.text}'
 
 
 class Comment(models.Model):
@@ -47,9 +47,9 @@ class Comment(models.Model):
         self.save()
 
 
-class PostComment(models.Model):
-    post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
-    comment = models.ForeignKey('Comment', on_delete=models.CASCADE, unique=False)
+# class PostComment(models.Model):
+#     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
+#     comment = models.ForeignKey('Comment', on_delete=models.CASCADE, unique=False)
 
 
 class PostRating(models.Model):
