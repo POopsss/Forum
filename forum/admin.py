@@ -8,4 +8,4 @@ admin.site.register(Category)
 admin.site.register(PostCategory)
 admin.site.register(PostRating)
 admin.site.register(CommentLike)
-
+# admin.site.register(PostComment)

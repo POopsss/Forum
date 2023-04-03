@@ -18,4 +18,6 @@ from .views import *
 
 urlpatterns = [
     path('', PostList.as_view(), name='main'),
+    path('post/<pk>', PostList.as_view(), name='post_detail'),
+    path('user/<pk>', FUserList.as_view(), name='user_detail'),
 ]

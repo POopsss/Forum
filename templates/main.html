@@ -2,5 +2,26 @@
 {% endblock title %}
 
 {% block content %}
-{{ post }}
-{% endblock content %}
+    {{ post.title }}
+    <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small>
+    {{ post.text|safe }}
+    <hr/>
+    Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="26" height="26"/> {{ post.author }}
+    <hr/>
+    {{ post.rating }}
+    <hr/>
+    Комментарии
+    {% for comment in post.comment.all %}
+        <table>
+            <tr>
+                <hr/>
+            <img src="/media/{{ comment.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ comment.author }}
+                <hr/>
+            {{ comment.text }}
+                <hr/>
+            {{ comment.like }}
+                <hr/>
+            <tr/>
+        </table>
+    {% endfor %}
+{% endblock %}

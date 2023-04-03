@@ -1,11 +1,13 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class FUser(models.Model):
     name = models.CharField(max_length=32)
     email = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='', blank=True)
 
     def __str__(self):
         return self.name
@@ -14,8 +16,8 @@ class FUser(models.Model):
 class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=256)
-    text = models.TextField()
+    title = models.TextField(max_length=128)
+    text = CKEditor5Field(verbose_name='Содержание', config_name='extends')
     category = models.ManyToManyField('Category', through='PostCategory')
     rating = models.FloatField(default=0)
 
@@ -37,9 +39,17 @@ class Comment(models.Model):
     text = models.TextField()
     like = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.text}'
+
     def setlike(self):
         self.like = len(CommentLike.objects.all().filter(comment_id=self.id))
         self.save()
+
+
+class PostComment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE, unique=False)
 
 
 class PostRating(models.Model):
