@@ -2,15 +2,10 @@
 {% endblock title %}
 
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ like }}
-        <input type="submit" value="Set">
-    </form>
 
         <form action="" method="POST">
         {% csrf_token %}
-        {{ rating }}
+        {{ rating.rating }}
         <input type="submit" value="Set">
     </form>
 
@@ -36,6 +31,12 @@
             <tr>
                 <td>{{ q.like }}</td>
             </tr>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
+                    <input type="hidden" id="posttype" name="posttype" value="commentlike" />
+                    <input type="submit" value="Like">
+                </form>
         </table>
         <hr/>
     {% endfor %}

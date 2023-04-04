@@ -26,17 +26,19 @@ class PostDetail(DetailView):
         context['like'] = LikeForm
         context['rating'] = RatingForm
         # print('----------------------')
-        # print(self.object.id)
+        # print(LikeForm)
         # print('----------------------')
         return context
 
-    def post(self, request, **kwargs):
-        print('---------------------------------')
-        print(request.POST)
-        print('---------------------------------')
-        print(request.META)
-        print('---------------------------------')
-        # LikeForm({'user': request.POST['user'], 'comment': request.POST['comment']}).save()
+    def post(self, request, *args, **kwargs):
+        user = FUser.objects.get(email_id=request.user.id)
+        if request.POST.get('posttype') == 'commentlike':
+            form = LikeForm({'user': user, 'comment': request.POST.get('commentid')})
+            if form.is_valid():
+                form.save()
+        # print(type(request.content))
+        # print('---------------------------------')
+        # LikeForm({'user': FUser.objects.get(email_id=request.user.id), 'comment': request.POST.get('commentid')}).save()
         return redirect('post_detail', pk=kwargs.get('pk'))
 
 

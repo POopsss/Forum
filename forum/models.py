@@ -39,17 +39,12 @@ class Comment(models.Model):
     text = models.TextField()
     like = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f'{self.text}'
+    # def __str__(self):
+    #     return f'{self.text}'
 
     def setlike(self):
         self.like = len(CommentLike.objects.all().filter(comment_id=self.id))
         self.save()
-
-
-# class PostComment(models.Model):
-#     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
-#     comment = models.ForeignKey('Comment', on_delete=models.CASCADE, unique=False)
 
 
 class PostRating(models.Model):
