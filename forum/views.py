@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 
 from forum.models import *
-from forum.forms import LikeForm, RatingForm, CommentForm
+from forum.forms import LikeForm, RatingForm, CommentForm, PostForm
 
 
 class PostList(ListView):
@@ -26,9 +26,7 @@ class PostDetail(DetailView):
         context['like'] = LikeForm
         context['rating'] = RatingForm
         context['comment'] = CommentForm
-        # print('----------------------')
-        # print(LikeForm)
-        # print('----------------------')
+        context['postform'] = PostForm
         return context
 
     def post(self, request, *args, **kwargs):

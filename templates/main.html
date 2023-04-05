@@ -1,3 +1,4 @@
+{% load static %}
 {% block title %}
 {% endblock title %}
 
@@ -40,6 +41,15 @@
         </form>
         <hr/><hr/>
     {% endfor %}
+{% load static %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ postform.media }}
+{#        {{ postform.text }}#}
+        {{ postform.as_p }}
+        <input type="submit" value="Like">
+    </form>
+{#    {{ comment.text }}#}
 
-    {{ comment.text }}
+
 {% endblock %}

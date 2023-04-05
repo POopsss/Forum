@@ -1,3 +1,6 @@
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
@@ -17,7 +20,7 @@ class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
     title = models.TextField(max_length=128)
-    text = CKEditor5Field(verbose_name='Содержание', config_name='extends')
+    text = RichTextUploadingField(null=True)
     category = models.ManyToManyField('Category', through='PostCategory')
     rating = models.FloatField(default=0)
 
