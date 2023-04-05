@@ -3,13 +3,6 @@
 
 {% block content %}
 
-        <form action="" method="POST">
-        {% csrf_token %}
-        {{ rating.rating }}
-        <input type="submit" value="Set">
-    </form>
-
-
     Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ post.author }}
     Дата: {{ post.data }}
     <hr/>
@@ -18,8 +11,16 @@
     {{ post.text|safe }}
 
     Рейтинг: {{ post.rating }}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ rating.rating }}
+            <input type="hidden" id="posttype" name="posttype" value="postrating" />
+            <input type="submit" value="Set">
+        </form>
     <hr/>
-    Комментарии:<hr/>
+
+    Комментарии:
+    <hr/>
     {% for q in now %}
         <table>
             <tr>
@@ -28,16 +29,17 @@
             <tr>
                 <td>{{ q.text }}</td>
             </tr>
-            <tr>
-                <td>{{ q.like }}</td>
-            </tr>
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
-                    <input type="hidden" id="posttype" name="posttype" value="commentlike" />
-                    <input type="submit" value="Like">
-                </form>
         </table>
         <hr/>
+        {{ q.like }}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
+            <input type="hidden" id="posttype" name="posttype" value="commentlike" />
+            <input type="submit" value="Like">
+        </form>
+        <hr/><hr/>
     {% endfor %}
+
+    {{ comment.text }}
 {% endblock %}
