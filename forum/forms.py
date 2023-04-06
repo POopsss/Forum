@@ -1,6 +1,6 @@
-from ckeditor.widgets import CKEditorWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from django.contrib import admin
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 
 from .models import *
@@ -23,18 +23,35 @@ class RatingForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    # text = forms.Textarea()
+    text = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
         model = Comment
         fields = '__all__'
 
 
+# class CommentForm(forms.ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields["text"].required = False
+#
+#
+#     class Meta:
+#         model = Comment
+#         fields = [
+#             'text',
+#         ]
+#         widgets = {
+#             "text": CKEditor5Widget(
+#                 attrs={"class": "django_ckeditor_5"}, config_name='default'
+#             )
+#         }
+
+
 class PostForm(forms.ModelForm):
-    text = forms.CharField(widget=CKEditorUploadingWidget())
+    text = forms.CharField(widget=CKEditorWidget(config_name='default'))
     class Meta:
         model = Post
-        fields = ['text',
-                  ]
+        fields = ['text',]
 
 
 

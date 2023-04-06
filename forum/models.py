@@ -1,10 +1,8 @@
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
-from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
+from ckeditor.fields import RichTextField
 
 
 class FUser(models.Model):
@@ -20,7 +18,7 @@ class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
     title = models.TextField(max_length=128)
-    text = RichTextUploadingField(null=True)
+    text = CKEditor5Field('Text', config_name='extends')
     category = models.ManyToManyField('Category', through='PostCategory')
     rating = models.FloatField(default=0)
 
@@ -39,8 +37,11 @@ class Comment(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
     data = models.DateTimeField(auto_now_add=True)
-    text = models.TextField()
+    text = RichTextField(config_name='default')
     like = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-data']
 
     # def __str__(self):
     #     return f'{self.text}'

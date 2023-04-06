@@ -1,5 +1,5 @@
-{% load static %}
 {% block title %}
+
 {% endblock title %}
 
 {% block content %}
@@ -21,14 +21,28 @@
     <hr/>
 
     Комментарии:
+
+    <div>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p>
+            {{ comment.media }}
+            {{ comment.text }}
+            <input type="hidden" id="posttype" name="posttype" value="comment" />
+        </p>
+        <p><input type="submit" value="Оставить комментарий"></p>
+    </form>
+    </div>
+
     <hr/>
+    <div>
     {% for q in now %}
         <table>
             <tr>
                 <td><img src="/media/{{ q.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ q.author}}</td>
             </tr>
             <tr>
-                <td>{{ q.text }}</td>
+                <td>{{ q.text|safe }}</td>
             </tr>
         </table>
         <hr/>
@@ -41,15 +55,7 @@
         </form>
         <hr/><hr/>
     {% endfor %}
-{% load static %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ postform.media }}
-{#        {{ postform.text }}#}
-        {{ postform.as_p }}
-        <input type="submit" value="Like">
-    </form>
-{#    {{ comment.text }}#}
+    </div>
 
 
 {% endblock %}

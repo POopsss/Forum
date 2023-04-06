@@ -26,26 +26,33 @@ class PostDetail(DetailView):
         context['like'] = LikeForm
         context['rating'] = RatingForm
         context['comment'] = CommentForm
-        context['postform'] = PostForm
+        # context['postform'] = PostForm
         return context
 
     def post(self, request, *args, **kwargs):
         user = FUser.objects.get(email_id=request.user.id)
         post = Post.objects.get(id=kwargs.get('pk'))
         if request.POST.get('posttype') == 'commentlike':
-            form = LikeForm({'user': user, 'comment': request.POST.get('commentid')})
-            if form.is_valid():
-                form.save()
+            comment = request.POST.get('commentid')
+            try:
+                CommentLike.objects.get(user=user, comment=comment).delete()
+                return redirect('post_detail', pk=kwargs.get('pk'))
+            except:
+                form = LikeForm({'user': user, 'comment': comment})
         if request.POST.get('posttype') == 'postrating':
             rating = int(request.POST.get('rating'))
             try:
                 form = PostRating.objects.get(user=user, post=post)
                 form.rating = rating
                 form.save()
+                return redirect('post_detail', pk=kwargs.get('pk'))
             except:
                 form = RatingForm({'user': user, 'post': post, 'rating': rating})
-                if form.is_valid():
-                    form.save()
+        if request.POST.get('posttype') == 'comment':
+            text = request.POST.get('text')
+            form = CommentForm({'author': user, 'post': post, 'text': text, 'like': 0})
+        if form.is_valid():
+            form.save()
 
         return redirect('post_detail', pk=kwargs.get('pk'))
 
