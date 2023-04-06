@@ -10,7 +10,7 @@ CKEDITOR_ALLOW_NONIMAGE_FILES = True
 CKEDITOR_CONFIGS = {
     'default': {
         'height': 100,
-        'width': 1600,
+        'width': 998,
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline', 'Smiley', 'TextColor', 'RemoveFormat', ],

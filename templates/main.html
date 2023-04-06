@@ -1,34 +1,41 @@
-{% block title %}
+{% extends 'flatpages/default.html' %}
+{% load static %}
 
+{% block title %}
 {% endblock title %}
 
 {% block content %}
 
-    Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ post.author }}
-    Дата: {{ post.data }}
+    <h6>Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="20" height="20"/>{{ post.author }}</h6>
     <hr/>
-    {{ post.title }}
-    <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small>
-    {{ post.text|safe }}
 
-    Рейтинг: {{ post.rating }}
+    <h3>{{ post.title }}</h3>
+    <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small>
+    <h5>{{ post.text|safe }}</h5>
+    <hr/>
+
+    <h6>Дата: {{ post.data }}</h6>
+    <h5>Рейтинг: {{ post.rating }}</h5>
         <form action="" method="POST">
             {% csrf_token %}
-            {{ rating.rating }}
+            {% for radio in rating.rating %}
+                    {{ radio }}
+            {% endfor %}
             <input type="hidden" id="posttype" name="posttype" value="postrating" />
-            <input type="submit" value="Set">
+            <input type="image" src="{% static '/images/bullet.png' %}" />
         </form>
-    <hr/>
-
-    Комментарии:
+    <hr/><hr/><hr/>
 
     <div>
+    <h3>Комментарии:</h3>
     <form action="" method="POST">
         {% csrf_token %}
         <p>
+        <h1>
             {{ comment.media }}
             {{ comment.text }}
             <input type="hidden" id="posttype" name="posttype" value="comment" />
+        </h1>
         </p>
         <p><input type="submit" value="Оставить комментарий"></p>
     </form>

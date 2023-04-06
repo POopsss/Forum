@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.forms',
     'django_ckeditor_5',
     'ckeditor',
@@ -41,6 +43,8 @@ INSTALLED_APPS = [
     'accounts',
 ]
 
+SITE_ID = 1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
 ]
 
 ROOT_URLCONF = 'game_forum.urls'
@@ -102,7 +107,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATIC_ROOT = (BASE_DIR / 'static')
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
