@@ -1,6 +1,16 @@
-{% block content %}
-    {{ post }}
-    <hr/>
-    {{ comment }}
+{% extends 'flatpages/default.html' %}
+{% load static %}
 
-{% endblock content %}
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+    {% for post in list %}
+        <h3>
+            {{ post.title }}
+            {{ post.author }}
+            {{ post.data }}
+            {{ post.rating }}
+        </h3>
+    {% endfor %}
+{% endblock %}

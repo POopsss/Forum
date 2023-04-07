@@ -33,26 +33,36 @@ class PostDetail(DetailView):
         user = FUser.objects.get(email_id=request.user.id)
         post = Post.objects.get(id=kwargs.get('pk'))
         if request.POST.get('posttype') == 'commentlike':
-            comment = request.POST.get('commentid')
+            comment = Comment.objects.get(id=request.POST.get('commentid'))
             try:
                 CommentLike.objects.get(user=user, comment=comment).delete()
+                comment.setlike()
                 return redirect('post_detail', pk=kwargs.get('pk'))
             except:
                 form = LikeForm({'user': user, 'comment': comment})
+                if form.is_valid():
+                    form.save()
+                    comment.setlike()
+
         if request.POST.get('posttype') == 'postrating':
             rating = int(request.POST.get('rating'))
             try:
                 form = PostRating.objects.get(user=user, post=post)
                 form.rating = rating
                 form.save()
+                post.setrating()
                 return redirect('post_detail', pk=kwargs.get('pk'))
             except:
                 form = RatingForm({'user': user, 'post': post, 'rating': rating})
+                if form.is_valid():
+                    form.save()
+                    post.setrating()
+
         if request.POST.get('posttype') == 'comment':
             text = request.POST.get('text')
             form = CommentForm({'author': user, 'post': post, 'text': text, 'like': 0})
-        if form.is_valid():
-            form.save()
+            if form.is_valid():
+                form.save()
 
         return redirect('post_detail', pk=kwargs.get('pk'))
 
