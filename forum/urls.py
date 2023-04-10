@@ -19,6 +19,5 @@ from .views import *
 urlpatterns = [
     path('', PostList.as_view(), name='main'),
     path('post/<pk>', PostDetail.as_view(), name='post_detail'),
-    path('user/<pk>', FUserList.as_view(), name='user_detail'),
     path('post/<pk>/com', CommentList.as_view(), name='com'),
 ]

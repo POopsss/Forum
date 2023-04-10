@@ -22,7 +22,8 @@ from game_forum import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/", include("allauth.urls")),
+    path('', include('accounts.urls')),
+    path('accounts/', include("allauth.urls")),
     path('ckeditor5/', include('django_ckeditor_5.urls'), name="ck_editor_5_upload_file"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('forum.urls')),
