@@ -27,5 +27,4 @@ class UserForm(forms.ModelForm):
     class Meta:
         permission_required = ('forum.change_fuser',)
         model = FUser
-        # print(FUser)
         fields = ['name', 'avatar']

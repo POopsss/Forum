@@ -2,7 +2,7 @@ from django_ckeditor_5.widgets import CKEditor5Widget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from ckeditor.widgets import CKEditorWidget
 from django import forms
-from requests import request
+from rest_framework import request
 
 from .models import *
 
@@ -30,18 +30,12 @@ class CommentForm(forms.ModelForm):
         fields = '__all__'
 
 
-# class PostForm(forms.ModelForm):
-#     text = forms.CharField(widget=CKEditor5Widget(attrs={"class": "django_ckeditor_5"}, config_name='extends'))
-#     title = forms.CharField(label='Заголовок')
-#     # author = forms.HiddenInput()
-#     class Meta:
-#         model = Post
-#         fields = ['title', 'text', 'author',]
-#         # fields = '__all__'
-
-
 class PostForm(forms.ModelForm):
-    author = forms.ModelChoiceField(queryset=FUser.objects.all(),  initial=FUser.objects.all()[0])
+    author = forms.ModelChoiceField(queryset=FUser.objects.all(),
+                                    initial=FUser.objects.all()[0],
+                                    widget=forms.HiddenInput()
+                                    )
+    title = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,5 +49,6 @@ class PostForm(forms.ModelForm):
                 attrs={'class': 'django_ckeditor_5'}, config_name='extends'
             ),
         }
+
 
 

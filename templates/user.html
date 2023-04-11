@@ -4,9 +4,24 @@
 {% endblock title %}
 
 {% block content %}
-    {{ user.email.email }}
+{#    {{ user.email.email }}#}
     <img src="/media/{{ user.avatar }}" class="rounded-circle" width="50" height="50"/>
     {{ user.name }}
-    <a href="/user/update/">Пользователь</a>
+    <form action="" method="post" enctype="multipart/form-data">
+        Изменить Аватар
+        {% csrf_token %}
+        {{ user_form.avatar }}
+        <input type="hidden" id="posttype" name="posttype" value="avatar" />
+        <input type="submit" value="Загрузить" />
+    </form>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        Изменить никнейм
+        {{ user_form.name }}
+        <input type="hidden" id="posttype" name="posttype" value="name" />
+        <input type="submit" value="Save" />
+    </form>
+            <li><a href="/accounts/logout/">Выйти</a></li>
 
 {% endblock content %}

@@ -5,12 +5,22 @@
 {% endblock title %}
 
 {% block content %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Текст</td>
+                <td>Автор</td>
+                <td>Дата</td>
+                <td>Рейтинг</td>
+            </tr>
     {% for post in list %}
-        <h3>
-            {{ post.title }}
-            {{ post.author }}
-            {{ post.data }}
-            {{ post.rating }}
-        </h3>
+            <tr>
+                <td><a href="post/{{ post.id }}/">{{ post.title }}</a></td>
+                <td>{{ post.author.name|truncatechars:50 }}</td>
+                <td>{{ post.text|truncatechars:50|safe}}</td>
+                <td>{{ post.data }}</td>
+                <td>{{ post.rating }}</td>
+            </tr>
     {% endfor %}
+        </table>
 {% endblock %}

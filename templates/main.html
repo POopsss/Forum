@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <h6>Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="20" height="20"/>{{ post.author }}</h6>
+    <h6>Добавил: <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="20" height="20"/>{{ post.author.name }}</h6>
     <hr/>
 
     <h3>{{ post.title }}</h3>
@@ -46,21 +46,21 @@
     {% for q in now %}
         <table>
             <tr>
-                <td><img src="/media/{{ q.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ q.author}}</td>
+                <td><img src="/media/{{ q.author.avatar }}" class="rounded-circle" width="26" height="26"/>{{ q.author.name }}<h5>{{ q.data }}</h5></td>
             </tr>
             <tr>
                 <td>{{ q.text|safe }}</td>
+            <tr>
+                <td>{{ q.like }}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
+                        <input type="hidden" id="posttype" name="posttype" value="commentlike" />
+                        <input type="submit" value="Like">
+                    </form>
+                </td>
             </tr>
         </table>
-        <hr/>
-        {{ q.like }}
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
-            <input type="hidden" id="posttype" name="posttype" value="commentlike" />
-            <input type="submit" value="Like">
-        </form>
-        <hr/><hr/>
     {% endfor %}
     </div>
 
