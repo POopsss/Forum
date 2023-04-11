@@ -4,6 +4,9 @@
 {% endblock title %}
 
 {% block content %}
-    {{ qwe }}
-    {{ asd.email.email }}
+    {{ user.email.email }}
+    <img src="/media/{{ user.avatar }}" class="rounded-circle" width="50" height="50"/>
+    {{ user.name }}
+    <a href="/user/update/">Пользователь</a>
+
 {% endblock content %}
