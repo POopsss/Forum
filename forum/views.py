@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 
 from forum.models import *
 from forum.forms import LikeForm, RatingForm, CommentForm, PostForm
@@ -74,7 +75,17 @@ class CommentList(ListView):
     context_object_name = 'com'
 
 
-class FUserList(DetailView):
-    model = FUser
-    template_name = 'test.html'
-    context_object_name = 'user'
+class PostCreate(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post_create.html'
+    # context_object_name = 'post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        return super().form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['create'] = PostForm
+    #     return context

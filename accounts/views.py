@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import UpdateView
 from forum.models import *
 from .forms import UserForm
+from django.contrib.auth.models import User
 
 
 def user(request):

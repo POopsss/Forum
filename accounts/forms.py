@@ -8,9 +8,7 @@ from django import forms
 class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
-        # user.groups.add(Group.objects.get(name='common users'))
-        fuser = FUser(email=user, name='User', avatar='default_avatar.jpg')
-        fuser.save()
+#         # user.groups.add(Group.objects.get(name='common users'))
         subject = 'Добро пожаловать на 127.0.0.1:8000!'
         text = f'{user.username}, вы успешно зарегистрировались на сайте!'
         html = (
@@ -29,5 +27,5 @@ class UserForm(forms.ModelForm):
     class Meta:
         permission_required = ('forum.change_fuser',)
         model = FUser
-        print(FUser)
+        # print(FUser)
         fields = ['name', 'avatar']

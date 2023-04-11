@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 from ckeditor.fields import RichTextField
 
@@ -10,8 +11,8 @@ class FUser(models.Model):
     email = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='', blank=True)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
 
 class Post(models.Model):
@@ -28,6 +29,9 @@ class Post(models.Model):
             self.rating += i.rating
         self.rating = self.rating / len(PostRating.objects.all().filter(post_id=self.id))
         self.save()
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.title}: {self.text}'
