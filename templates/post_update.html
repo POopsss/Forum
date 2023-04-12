@@ -4,10 +4,7 @@
 {% endblock title %}
 
 {% block content %}
-{#    {% for post in post %}#}
-{#    {{ post }}#}
-{#    {% endfor %}#}
-    <form action="" method="POST">
+        <form action="" method="POST">
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}

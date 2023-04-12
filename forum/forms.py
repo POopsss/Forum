@@ -1,3 +1,4 @@
+from django.shortcuts import redirect, render
 from django_ckeditor_5.widgets import CKEditor5Widget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from ckeditor.widgets import CKEditorWidget
@@ -49,6 +50,8 @@ class PostForm(forms.ModelForm):
                 attrs={'class': 'django_ckeditor_5'}, config_name='extends'
             ),
         }
+
+
 
 
 

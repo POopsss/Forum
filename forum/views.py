@@ -1,9 +1,5 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, FormView
-
+from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from forum.models import *
 from forum.forms import LikeForm, RatingForm, CommentForm, PostForm
 
@@ -27,7 +23,6 @@ class PostDetail(DetailView):
         context['like'] = LikeForm
         context['rating'] = RatingForm
         context['comment'] = CommentForm
-        # context['postform'] = PostForm
         return context
 
     def post(self, request, *args, **kwargs):
@@ -70,7 +65,6 @@ class PostDetail(DetailView):
 
 class CommentList(ListView):
     model = Comment
-    # queryset = Comment.objects.filter(po)
     template_name = 'test.html'
     context_object_name = 'com'
 
@@ -79,14 +73,25 @@ class PostCreate(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'post_create.html'
-    # context_object_name = 'post'
 
     def form_valid(self, form):
         post = form.save(commit=False)
         post.author = FUser.objects.get(email=self.request.user)
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['create'] = PostForm
-    #     return context
+
+class PostUpdate(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post_update.html'
+
+    def get(self, request, *args, **kwargs):
+        context = super().get(self, request, *args, **kwargs)
+        if self.object.author.email == request.user:
+            return context
+        return redirect('main')
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = FUser.objects.get(email=self.request.user)
+        return super().form_valid(form)

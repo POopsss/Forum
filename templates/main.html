@@ -51,7 +51,8 @@
             <tr>
                 <td>{{ q.text|safe }}</td>
             <tr>
-                <td>{{ q.like }}
+                <td>
+                    {{ q.like }}
                     <form action="" method="POST">
                         {% csrf_token %}
                         <input type="hidden" id="commentid" name="commentid" value="{{ q.id }}" />
@@ -63,6 +64,4 @@
         </table>
     {% endfor %}
     </div>
-
-
 {% endblock %}
