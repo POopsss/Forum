@@ -1,5 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+{% load custom_filters %}
+{% load custom_tags %}
 
 {% block title %}
 {% endblock title %}
@@ -21,7 +23,7 @@
                 <td>{{ post.author.name }}</td>
                 <td><a href="http://127.0.0.1:8000/post/{{ post.id }}/">{{ post.title }}</a></td>
                 <td><h6><small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></h6></td>
-                <td>{{ post.text|truncatechars:30|safe }}</td>
+                <td>{{ post.text|censor|striptags|truncatechars:256 }}</td>
                 <td>{{ post.data }}</td>
                 <td>{{ post.rating }}</td>
                 <td><a href="http://127.0.0.1:8000/post/update/{{ post.id }}/">Редактировать</a></td>
