@@ -1,0 +1,63 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+    {% if new_response %}
+    Новые отклики
+    <table>
+        {% for response in new_response %}
+            <tr>
+                <td>
+                    <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+                    {{ response.author.name }}
+                    {{ response.text|safe }}
+                    <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
+                </td>
+                <td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="posttype" name="posttype" value="accept" />
+                        <input type="submit" value="Принять" />
+                    </form>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="posttype" name="posttype" value="delete" />
+                        <input type="submit" value="Удалить" />
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <table>
+        {% for response in response %}
+            <tr>
+                <td>
+                    <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+                    {{ response.author.name }}
+                    {{ response.text|safe }}
+                    <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
+                </td>
+                <td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="posttype" name="posttype" value="accept" />
+                        <input type="submit" value="Принять" />
+                    </form>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="posttype" name="posttype" value="delete" />
+                        <input type="submit" value="Удалить" />
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

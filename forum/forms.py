@@ -1,33 +1,14 @@
-from django.shortcuts import redirect, render
 from django_ckeditor_5.widgets import CKEditor5Widget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from ckeditor.widgets import CKEditorWidget
 from django import forms
-from rest_framework import request
 
 from .models import *
 
 
-class LikeForm(forms.ModelForm):
-    class Meta:
-        model = CommentLike
-        fields = [
-            "comment",
-            "user",
-        ]
-
-
-class RatingForm(forms.ModelForm):
-    rating = forms.ChoiceField(widget=forms.RadioSelect, choices=[(i, i) for i in range(1, 11)])
-    class Meta:
-        model = PostRating
-        fields = '__all__'
-
-
-class CommentForm(forms.ModelForm):
+class ResponseForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
-        model = Comment
+        model = Response
         fields = '__all__'
 
 

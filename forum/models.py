@@ -11,9 +11,6 @@ class FUser(models.Model):
     email = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='', blank=True)
 
-    # def __str__(self):
-    #     return self.name
-
 
 class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
@@ -23,60 +20,23 @@ class Post(models.Model):
     category = models.ManyToManyField('Category', through='PostCategory')
     rating = models.FloatField(default=0)
 
-    def setrating(self):
-        self.rating = 0
-        for i in PostRating.objects.all().filter(post_id=self.id):
-            self.rating += i.rating
-        self.rating = self.rating / len(PostRating.objects.all().filter(post_id=self.id))
-        self.save()
-
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
 
-    def __str__(self):
-        return f'{self.title}: {self.text}'
+    # def __str__(self):
+    #     return f'{self.title}: {self.text}'
 
 
-class Comment(models.Model):
+class Response(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
     data = models.DateTimeField(auto_now_add=True)
     text = RichTextField(config_name='default')
-    like = models.IntegerField(default=0)
+    new = models.BooleanField(default=True)
+    accept = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-data']
-
-    # def __str__(self):
-    #     return f'{self.text}'
-
-    def setlike(self):
-        print('qew')
-        self.like = len(CommentLike.objects.all().filter(comment_id=self.id))
-        self.save()
-
-
-class PostRating(models.Model):
-    user = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
-    post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
-    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-
-    class Meta:
-        unique_together = ('user', 'post',)
-
-    def __str__(self):
-        return f'{self.user} {self.post} {self.rating}'
-
-
-class CommentLike(models.Model):
-    user = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
-    comment = models.ForeignKey('Comment', on_delete=models.CASCADE, unique=False)
-
-    class Meta:
-        unique_together = ('user', 'comment',)
-
-    def __str__(self):
-        return f'{self.user} {self.comment}'
 
 
 class Category(models.Model):

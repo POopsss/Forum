@@ -5,7 +5,7 @@
 
 {% block content %}
 {#    {{ user.email.email }}#}
-    <img src="/media/{{ user.avatar }}" class="rounded-circle" width="50" height="50"/>
+    <img src="/media/{{ user.avatar }}" class="rounded-circle" width="30" height="30"/>
     {{ user.name }}
     <form action="" method="post" enctype="multipart/form-data">
         Изменить Аватар
@@ -24,5 +24,6 @@
     </form>
             <li><a href="/accounts/logout/">Выйти</a></li>
             <li><a href="/user/post/">Пост</a></li>
+            <li><a href="/user/response/">Отклики</a></li>
 
 {% endblock content %}
