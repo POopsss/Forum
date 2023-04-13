@@ -37,6 +37,7 @@ class PostForm(forms.ModelForm):
                                     widget=forms.HiddenInput()
                                     )
     title = forms.CharField()
+    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), label='Категории')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,7 +45,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('author', 'title', 'text')
+        fields = ('author', 'title', 'category', 'text',)
         widgets = {
             'text': CKEditor5Widget(
                 attrs={'class': 'django_ckeditor_5'}, config_name='extends'

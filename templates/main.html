@@ -10,16 +10,15 @@
     <hr/>
 
     <h3>{{ post.title }}</h3>
-    <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small>
     <h5>{{ post.text|safe }}</h5>
     <hr/>
-
+    <h6><small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></h6>
     <h6>Дата: {{ post.data }}</h6>
     <h5>Рейтинг: {{ post.rating }}</h5>
         <form action="" method="POST">
             {% csrf_token %}
-            {% for radio in rating.rating %}
-                    {{ radio }}
+            {% for rating in rating.rating %}
+                    {{ rating }}
             {% endfor %}
             <input type="hidden" id="posttype" name="posttype" value="postrating" />
             <input type="image" src="{% static '/images/bullet.png' %}" />

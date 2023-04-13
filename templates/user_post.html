@@ -5,16 +5,26 @@
 {% endblock title %}
 
 {% block content %}
-    <table>
-        {% for post in user_post %}
-        <tr>
-            <td>
-                {{ post.title }}
-            </td>
-            <td>
-                {{ post.rating }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+        <table>
+            <tr>
+                <td>Автор</td>
+                <td>Заголовок</td>
+                <td>Теги</td>
+                <td>Текст</td>
+                <td>Дата</td>
+                <td>Рейтинг</td>
+                <td>Редактировать</td>
+            </tr>
+    {% for post in user_post %}
+            <tr>
+                <td>{{ post.author.name }}</td>
+                <td><a href="post/{{ post.id }}/">{{ post.title }}</a></td>
+                <td><h6><small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></h6></td>
+                <td>{{ post.text|truncatechars:30|safe }}</td>
+                <td>{{ post.data }}</td>
+                <td>{{ post.rating }}</td>
+                <td><a href="http://127.0.0.1:8000/post/update/{{ post.id }}/">Редактировать</a></td>
+            </tr>
+    {% endfor %}
+        </table>
 {% endblock %}

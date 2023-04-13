@@ -4,13 +4,10 @@
 {% endblock title %}
 
 {% block content %}
-{#    {% for post in post %}#}
-{#    {{ post }}#}
-{#    {% endfor %}#}
     <form action="" method="POST">
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}
-        <p><input type="submit" value="Оставить комментарий"></p>
+        <input type="submit" value="Оставить комментарий">
     </form>
 {% endblock content %}
