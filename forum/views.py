@@ -7,7 +7,7 @@ from forum.forms import ResponseForm, PostForm
 class PostList(ListView):
     model = Post
     ordering = '-data'
-    template_name = 'test2.html'
+    template_name = 'main.html'
     context_object_name = 'list'
 
 

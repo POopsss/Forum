@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 from ckeditor.fields import RichTextField
+from froala_editor.fields import FroalaField
 
 
 class FUser(models.Model):
@@ -16,7 +17,7 @@ class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
     title = models.TextField(max_length=128)
-    text = CKEditor5Field('Text', config_name='extends')
+    text = FroalaField(theme='dark')
     category = models.ManyToManyField('Category', through='PostCategory')
     rating = models.FloatField(default=0)
 

@@ -19,12 +19,14 @@ from django.urls import path, include
 
 from django.conf.urls.static import static
 from game_forum import settings
+from froala_editor import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-    path('accounts/', include("allauth.urls")),
-    path('ckeditor5/', include('django_ckeditor_5.urls'), name="ck_editor_5_upload_file"),
+    path('accounts/', include('allauth.urls')),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
+    path('froala_editor/', include('froala_editor.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('forum.urls')),
 ]
