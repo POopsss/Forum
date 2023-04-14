@@ -6,21 +6,21 @@ from django.utils.translation import pgettext_lazy
 
 
 class PostFilter(FilterSet):
-    title = Post(
-        field_name='title',
-        lookup_expr='icontains',
-        label=pgettext_lazy('Поиск в названии статьи', 'Search in the title'),
-    )
+    # title = Post(
+    #     field_name='title',
+    #     lookup_expr='icontains',
+    #     label=pgettext_lazy('Поиск в названии статьи', 'Search in the title'),
+    # )
 
     category = ModelMultipleChoiceFilter(
-        field_name='postcategory__categoryThrough',
+        field_name='postcategory__category',
         queryset=Category.objects.all(),
         label=pgettext_lazy('Категории', 'Category'),
         conjoined=True,
     )
 
     added_after = DateTimeFilter(
-        field_name='date',
+        field_name='data',
         lookup_expr='gt',
         widget=DateTimeInput(attrs={'type': 'datetime-local'}),
         label=pgettext_lazy('Опубликовано после', 'Published after'),

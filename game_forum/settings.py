@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'froala_editor',
     'ckeditor',
     'ckeditor_uploader',
+    'django_filters',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -111,8 +112,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

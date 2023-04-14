@@ -58,9 +58,7 @@ def user_response(request):
         for post in post:
             new_response += Response.objects.all().filter(post=post, new=False, accept=False)
             response += Response.objects.all().filter(post=post, new=True, accept=False)
-        paginator = Paginator(response, 3)
-        page_number = request.GET.get('page')
-        response = paginator.get_page(page_number)
+        response = Paginator(response, 3).get_page(request.GET.get('page'))
         for i in new_response:
             i.new = True
             i.save()
