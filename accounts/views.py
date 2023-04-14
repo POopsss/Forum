@@ -2,6 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
 from forum.models import FUser, Post, Response
 from .forms import UserForm
+from django.core.paginator import Paginator
 
 
 def user(request):
@@ -33,7 +34,9 @@ def user_post(request):
         return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
-        post = Post.objects.all().filter(author=fuser)
+        paginator = Paginator(Post.objects.all().filter(author=fuser).order_by('id'), 3)
+        page_number = request.GET.get('page')
+        post = paginator.get_page(page_number)
         context = {
             'user': fuser,
             'user_post': post,
@@ -55,6 +58,9 @@ def user_response(request):
         for post in post:
             new_response += Response.objects.all().filter(post=post, new=False, accept=False)
             response += Response.objects.all().filter(post=post, new=True, accept=False)
+        paginator = Paginator(response, 3)
+        page_number = request.GET.get('page')
+        response = paginator.get_page(page_number)
         for i in new_response:
             i.new = True
             i.save()

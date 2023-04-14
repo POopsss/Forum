@@ -1,5 +1,6 @@
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
+from django.contrib.sites import requests
 
 from .models import *
 
@@ -18,6 +19,7 @@ class PostForm(forms.ModelForm):
                                     )
     title = forms.CharField()
     category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), label='Категории')
+
 
     class Meta:
         model = Post

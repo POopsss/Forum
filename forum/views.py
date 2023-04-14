@@ -9,6 +9,7 @@ class PostList(ListView):
     ordering = '-data'
     template_name = 'main.html'
     context_object_name = 'list'
+    paginate_by = 2
 
 
 class PostDetail(DetailView):
@@ -40,6 +41,12 @@ class PostCreate(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'post_create.html'
+
+    def get(self, request, *args, **kwargs):
+        context = super().get(self, request, *args, **kwargs)
+        if request.user.is_anonymous:
+            return redirect('main')
+        return context
 
     def form_valid(self, form):
         post = form.save(commit=False)

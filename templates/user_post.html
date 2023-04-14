@@ -38,4 +38,23 @@
             </tr>
     {% endfor %}
         </table>
-{% endblock %}
+
+   {% if user_post.has_previous %}
+       <a href="?page=1">1</a>
+       {% if user_post.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ user_post.previous_page_number }}">{{ user_post.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ user_post.number }}
+
+   {% if user_post.has_next %}
+       <a href="?page={{ user_post.next_page_number }}">{{ user_post.next_page_number }}</a>
+       {% if user_post.num_pages != user_post.next_page_number %}
+           ...
+           <a href="?page={{ user_post.paginator.num_pages }}">{{ user_post.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
