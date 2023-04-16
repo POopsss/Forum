@@ -1,8 +1,10 @@
 from django.core.files.storage import FileSystemStorage
+from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import redirect, render
 from forum.models import FUser, Post, Response
 from .forms import UserForm
 from django.core.paginator import Paginator
+from forum.filters import PostFilter, ResponseFilter
 
 
 def user(request):
@@ -34,12 +36,25 @@ def user_post(request):
         return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
-        paginator = Paginator(Post.objects.all().filter(author=fuser).order_by('id'), 3)
+        post = Post.objects.all().filter(author=fuser)
+        get_filter = PostFilter(request.GET, post)
+        if request.GET:
+            if request.GET.get('title'):
+                filter = request.GET.get('title')
+                post = post.filter(title__icontains=filter)
+            if request.GET.get('category'):
+                filter = request.GET.getlist('category')
+                post = post.filter(category__in=filter)
+            if request.GET.get('added_after'):
+                filter = request.GET.get('added_after')
+                post = post.filter(data__gt=filter)
+        paginator = Paginator(post.order_by('-data'), 3)
         page_number = request.GET.get('page')
         post = paginator.get_page(page_number)
         context = {
             'user': fuser,
             'user_post': post,
+            'get_filter': get_filter,
         }
         return render(request, template_name, context)
     elif request.method == 'POST':
@@ -53,12 +68,21 @@ def user_response(request):
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)
-        new_response = []
-        response = []
-        for post in post:
-            new_response += Response.objects.all().filter(post=post, new=False, accept=False)
-            response += Response.objects.all().filter(post=post, new=True, accept=False)
-        response = Paginator(response, 3).get_page(request.GET.get('page'))
+        new_response = Response.objects.all().filter(post__in=post, new=False, accept=False)
+        response = Response.objects.all().filter(post__in=post, new=True, accept=False)
+        get_filter = ResponseFilter(request.GET, response)
+        if request.GET:
+            if request.GET.get('author'):
+                filter = request.GET.get('author')
+                response = response.filter(author__name__icontains=filter)
+            if request.GET.get('post'):
+                filter = request.GET.get('post')
+                response = response.filter(post__title__icontains=filter)
+            if request.GET.get('added_after'):
+                filter = request.GET.get('added_after')
+                response = response.filter(data__gt=filter)
+
+        response = Paginator(response.order_by('-data'), 3).get_page(request.GET.get('page'))
         for i in new_response:
             i.new = True
             i.save()
@@ -66,6 +90,7 @@ def user_response(request):
             'user': fuser,
             'new_response': new_response,
             'response': response,
+            'get_filter': get_filter,
         }
         return render(request, template_name, context)
     elif request.method == 'POST':
@@ -73,6 +98,18 @@ def user_response(request):
             response = Response.objects.get(id=request.POST.get('post'))
             response.accept = True
             response.save()
+
+            subject = 'Accept'
+            text = f'{response.author.name}, ваш отклик был принят!'
+            html = (
+                f'<b>{response.author.name}</b>, ваш отклик: {response.text} на статью: {response.post.title} был принят!'
+            )
+            msg = EmailMultiAlternatives(
+                subject=subject, body=text, from_email=None, to=[response.author.email.email]
+            )
+            msg.attach_alternative(html, "text/html")
+            msg.send()
+
             return redirect('user_response')
         if request.POST.get('posttype') == 'delete':
             Response.objects.get(id=request.POST.get('post')).delete()

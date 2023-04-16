@@ -1,10 +1,18 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block title %}
 {% endblock title %}
 
 {% block content %}
+
+<form action="" method="get">
+    {{ get_filter.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+
     {% if new_response %}
     Новые отклики
     <table>
@@ -15,6 +23,7 @@
                     {{ response.author.name }}
                     {{ response.data }}
                     {{ response.text|safe }}
+                    {{ response.post }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
                 </td>
                 <td>
@@ -43,6 +52,7 @@
                     {{ response.author.name }}
                     {{ response.data }}
                     {{ response.text|safe }}
+                    {{ response.id }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
                 </td>
                 <td>
@@ -63,19 +73,19 @@
         {% endfor %}
     </table>
 
-       {% if response.has_previous %}
-       <a href="?page=1">1</a>
+   {% if response.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
        {% if response.previous_page_number != 1 %}
            ...
-           <a href="?page={{ response.previous_page_number }}">{{ response.previous_page_number }}</a>
+           <a href="?{% url_replace page=response.previous_page_number %}">{{ response.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 
    {{ response.number }}
 
    {% if response.has_next %}
-       <a href="?page={{ response.next_page_number }}">{{ response.next_page_number }}</a>
-       {% if response.num_pages != response.next_page_number %}
+       <a href="?{% url_replace page=response.next_page_number %}">{{ response.next_page_number }}</a>
+       {% if response.paginator.num_pages != response.next_page_number %}
            ...
            <a href="?page={{ response.paginator.num_pages }}">{{ response.paginator.num_pages }}</a>
        {% endif %}

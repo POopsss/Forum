@@ -7,51 +7,37 @@
 {% endblock title %}
 
 {% block content %}
-        <table>
-            <tr>
-                <td>Автор</td>
-                <td>Заголовок</td>
-                <td>Теги</td>
-                <td>Текст</td>
-                <td>Дата</td>
-                <td>Рейтинг</td>
-                <td>Редактировать</td>
-                <td>Удалить</td>
-            </tr>
+
+<form action="" method="get">
+    {{ get_filter.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
     {% for post in user_post %}
-            <tr>
-                <td>{{ post.author.name }}</td>
-                <td><a href="http://127.0.0.1:8000/post/{{ post.id }}/">{{ post.title }}</a></td>
-                <td><h6><small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></h6></td>
-                <td>{{ post.text|censor|striptags|truncatechars:256 }}</td>
-                <td>{{ post.data }}</td>
-                <td>{{ post.rating }}</td>
-                <td><a href="http://127.0.0.1:8000/post/update/{{ post.id }}/">Редактировать</a></td>
-                <td>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" id="post" name="post" value={{ post.id }} />
-                        <input type="hidden" id="posttype" name="posttype" value="delete_post" />
-                        <input type="submit" value="Удалить" />
-                    </form>
-                </td>
-            </tr>
+        <p>
+            <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+            {{ post.author.name }}
+            {{ post.data }}
+            Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></td>
+        </p>
+        <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>
+        <p>{{ post.text|censor|striptags|truncatechars:128 }}</p>
+        <hr><hr>
     {% endfor %}
-        </table>
 
    {% if user_post.has_previous %}
-       <a href="?page=1">1</a>
+       <a href="?{% url_replace page=1 %}">1</a>
        {% if user_post.previous_page_number != 1 %}
            ...
-           <a href="?page={{ user_post.previous_page_number }}">{{ user_post.previous_page_number }}</a>
+           <a href="?{% url_replace page=user_post.previous_page_number %}">{{ user_post.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 
    {{ user_post.number }}
 
    {% if user_post.has_next %}
-       <a href="?page={{ user_post.next_page_number }}">{{ user_post.next_page_number }}</a>
-       {% if user_post.num_pages != user_post.next_page_number %}
+       <a href="?{% url_replace page=user_post.next_page_number %}">{{ user_post.next_page_number }}</a>
+       {% if user_post.paginator.num_pages != user_post.next_page_number %}
            ...
            <a href="?page={{ user_post.paginator.num_pages }}">{{ user_post.paginator.num_pages }}</a>
        {% endif %}

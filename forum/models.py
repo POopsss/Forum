@@ -1,8 +1,6 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django_ckeditor_5.fields import CKEditor5Field
 from ckeditor.fields import RichTextField
 from froala_editor.fields import FroalaField
 

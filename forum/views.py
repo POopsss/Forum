@@ -10,7 +10,7 @@ class PostList(ListView):
     ordering = '-data'
     template_name = 'main.html'
     context_object_name = 'list'
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -20,6 +20,7 @@ class PostList(ListView):
     def get_context_data(self, **kwargs):
        context = super().get_context_data(**kwargs)
        context['filterset'] = self.filterset
+       # print(context.get('page_obj'))
        return context
 
 
@@ -42,7 +43,6 @@ class PostDetail(DetailView):
         if request.POST.get('posttype') == 'response':
             text = request.POST.get('text')
             form = ResponseForm({'author': user, 'post': post, 'text': text})
-            print(form.errors)
             if form.is_valid():
                 form.save()
 
