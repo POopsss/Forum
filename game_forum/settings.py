@@ -150,8 +150,8 @@ ADMINS = (
     ('Asd', 'higens9216@yandex.ru'),
 )
 
-CELERY_BROKER_URL = 'redis://default:kIlHzSlIBW2hgVkgQEAzfWJbruEwl5sB@redis-18408.c246.us-east-1-4.ec2.cloud.redislabs.com:18408'
-CELERY_RESULT_BACKEND = 'redis://default:kIlHzSlIBW2hgVkgQEAzfWJbruEwl5sB@redis-18408.c246.us-east-1-4.ec2.cloud.redislabs.com:18408'
+CELERY_BROKER_URL = 'redis://default:ZYvAEASCaEZuBSU4t1Huq4fKJf50IjAN@redis-15647.c14.us-east-1-3.ec2.cloud.redislabs.com:15647'
+CELERY_RESULT_BACKEND = 'redis://default:ZYvAEASCaEZuBSU4t1Huq4fKJf50IjAN@redis-15647.c14.us-east-1-3.ec2.cloud.redislabs.com:15647'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

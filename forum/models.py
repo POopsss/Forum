@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from froala_editor.fields import FroalaField
+from .tasks import mail_sender
 
 
 class FUser(models.Model):
@@ -36,6 +37,26 @@ class Response(models.Model):
 
     class Meta:
         ordering = ['-data']
+
+    def new_response(self):
+        mail = {
+            'subject': 'Вам пришёл отклик на объявление',
+            'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
+            'html': f'<b>{self.author.name}, оставил отклик: {self.text} на ваше объявление: {self.post.title}</b>',
+            'to': [self.author.email.email],
+        }
+        mail_sender.delay(mail)
+
+    def accept_response(self):
+        mail = {
+            'subject': 'Ваш отклик был принят!',
+            'text': f'{self.author.name}, ваш отклик был принят!',
+            'html': (
+                f'<b>{self.author.name}, ваш отклик: {self.text} на статью: {self.post.title} был принят!</b>'
+            ),
+            'to': [self.author.email.email],
+        }
+        mail_sender.delay(mail)
 
 
 class Category(models.Model):

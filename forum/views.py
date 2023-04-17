@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from forum.models import *
 from forum.forms import ResponseForm, PostForm
 from .filters import PostFilter
+from .tasks import *
 
 
 class PostList(ListView):
@@ -20,7 +21,6 @@ class PostList(ListView):
     def get_context_data(self, **kwargs):
        context = super().get_context_data(**kwargs)
        context['filterset'] = self.filterset
-       # print(context.get('page_obj'))
        return context
 
 

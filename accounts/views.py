@@ -5,6 +5,7 @@ from forum.models import FUser, Post, Response
 from .forms import UserForm
 from django.core.paginator import Paginator
 from forum.filters import PostFilter, ResponseFilter
+from forum.tasks import *
 
 
 def user(request):
@@ -98,17 +99,7 @@ def user_response(request):
             response = Response.objects.get(id=request.POST.get('post'))
             response.accept = True
             response.save()
-
-            subject = 'Accept'
-            text = f'{response.author.name}, ваш отклик был принят!'
-            html = (
-                f'<b>{response.author.name}</b>, ваш отклик: {response.text} на статью: {response.post.title} был принят!'
-            )
-            msg = EmailMultiAlternatives(
-                subject=subject, body=text, from_email=None, to=[response.author.email.email]
-            )
-            msg.attach_alternative(html, "text/html")
-            msg.send()
+            Response.accept_response(response)
 
             return redirect('user_response')
         if request.POST.get('posttype') == 'delete':
