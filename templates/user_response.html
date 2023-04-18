@@ -21,7 +21,7 @@
                 <td>
                     <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
                     {{ response.author.name }}
-                    {{ response.data }}
+                    {{ response.date }}
                     {{ response.text|safe }}
                     {{ response.post }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
@@ -50,7 +50,7 @@
                 <td>
                     <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
                     {{ response.author.name }}
-                    {{ response.data }}
+                    {{ response.date }}
                     {{ response.text|safe }}
                     {{ response.id }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>

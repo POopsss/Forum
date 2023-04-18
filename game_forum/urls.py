@@ -23,7 +23,7 @@ from froala_editor import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
+    path('user/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
     path('ckeditor5/', include('django_ckeditor_5.urls')),
     path('froala_editor/', include('froala_editor.urls')),

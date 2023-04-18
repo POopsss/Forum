@@ -17,7 +17,7 @@
         <p>
             <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="30" height="30"/>
             {{ post.author.name }}
-            {{ post.data }}
+            {{ post.date }}
             Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></td>
         </p>
         <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>

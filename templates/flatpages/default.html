@@ -20,9 +20,10 @@
           <ul class="sf-menu" id="nav">
             <li><a href="/admin/">Админка</a></li>
             <li><a href="/">Главная</a></li>
+            {% if request.user.is_authenticated %}
             <li><a href="/create/">Создать объявление</a></li>
+            {% endif %}
             <li><a href="/user/">Пользователь</a></li>
-            <li><a href="/qwe/">Test</a></li>
           </ul>
         </div>
       </nav>

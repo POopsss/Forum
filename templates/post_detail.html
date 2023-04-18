@@ -13,7 +13,7 @@
     <h5>{{ post.text|safe }}</h5>
     <hr/>
     <h6><small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></h6>
-    <h6>Дата: {{ post.data }}</h6>
+    <h6>Дата: {{ post.date }}</h6>
     <hr/><hr/><hr/>
 
     <div>

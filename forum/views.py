@@ -8,7 +8,7 @@ from .tasks import *
 
 class PostList(ListView):
     model = Post
-    ordering = '-data'
+    ordering = '-date'
     template_name = 'main.html'
     context_object_name = 'list'
     paginate_by = 10
@@ -27,7 +27,7 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    ordering = '-data'
+    ordering = '-date'
     template_name = 'post_detail.html'
     context_object_name = 'post'
 
@@ -56,6 +56,7 @@ class PostCreate(CreateView):
 
     def get(self, request, *args, **kwargs):
         context = super().get(self, request, *args, **kwargs)
+        # print(request.user.perms)
         if request.user.is_anonymous:
             return redirect('main')
         return context

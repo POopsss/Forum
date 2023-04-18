@@ -13,14 +13,21 @@ class PostAdmin(admin.ModelAdmin):
     category_m2m.short_description = 'Category'
 
     list_display = (
-        'author', 'title', 'data', 'category_m2m',
+        'author', 'title', 'date', 'category_m2m',
     )
+
+    list_filter = ('author', 'date', 'category',
+                   )
 
 
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):
     list_display = (
-        'author', 'post', 'data'
+        'author', 'post', 'date',
+    )
+
+    list_filter = (
+        'author', 'date',
     )
 
 
@@ -36,9 +43,5 @@ class FUserAdmin(admin.ModelAdmin):
         'name', 'email_fk',
     )
 
-
-# admin.site.register(FUser)
-# admin.site.register(Post)
-# admin.site.register(Response)
 admin.site.register(Category)
 admin.site.register(PostCategory)

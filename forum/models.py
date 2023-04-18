@@ -18,7 +18,7 @@ class FUser(models.Model):
             'text': f'Добро пожаловать на 127.0.0.1:8000!',
             'html': f'Добро пожаловать на <a href="http://127.0.0.1:8000/">сайт</a>!',
         }
-        # mail_sender.delay(mail)
+        mail_sender.delay(mail)
         # mail_sender(mail)
 
     def __str__(self):
@@ -27,7 +27,7 @@ class FUser(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
-    data = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     title = models.TextField(max_length=128)
     text = FroalaField(theme='dark')
     category = models.ManyToManyField('Category', through='PostCategory')
@@ -43,13 +43,13 @@ class Post(models.Model):
 class Response(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
-    data = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     text = RichTextField(config_name='default')
     new = models.BooleanField(default=True)
     accept = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-data']
+        ordering = ['-date']
 
     def new_response(self):
         mail = {
@@ -58,7 +58,7 @@ class Response(models.Model):
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
             'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}<br>на ваше объявление:<br>{self.post.title}',
         }
-        # mail_sender.delay(mail)
+        mail_sender.delay(mail)
         # mail_sender(mail)
 
     def accept_response(self):
@@ -70,11 +70,11 @@ class Response(models.Model):
                 f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text}<br>на статью:<br>{self.post.title}<br><b>был принят!</b>'
             ),
         }
-        # mail_sender.delay(mail)
+        mail_sender.delay(mail)
         # mail_sender(mail)
 
     def __str__(self):
-        return f'{self.author} {self.data}'
+        return f'{self.author} {self.date}'
 
 
 class Category(models.Model):

@@ -6,6 +6,7 @@ from .forms import UserForm
 from django.core.paginator import Paginator
 from forum.filters import PostFilter, ResponseFilter
 from forum.tasks import *
+from django.contrib.auth.models import User
 
 
 def user(request):
@@ -48,8 +49,8 @@ def user_post(request):
                 post = post.filter(category__in=filter)
             if request.GET.get('added_after'):
                 filter = request.GET.get('added_after')
-                post = post.filter(data__gt=filter)
-        paginator = Paginator(post.order_by('-data'), 3)
+                post = post.filter(date__gt=filter)
+        paginator = Paginator(post.order_by('-date'), 3)
         page_number = request.GET.get('page')
         post = paginator.get_page(page_number)
         context = {
@@ -81,9 +82,9 @@ def user_response(request):
                 response = response.filter(post__title__icontains=filter)
             if request.GET.get('added_after'):
                 filter = request.GET.get('added_after')
-                response = response.filter(data__gt=filter)
+                response = response.filter(date__gt=filter)
 
-        response = Paginator(response.order_by('-data'), 3).get_page(request.GET.get('page'))
+        response = Paginator(response.order_by('-date'), 3).get_page(request.GET.get('page'))
         for i in new_response:
             i.new = True
             i.save()

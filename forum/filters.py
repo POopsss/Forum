@@ -19,7 +19,7 @@ class PostFilter(FilterSet):
     )
 
     added_after = DateTimeFilter(
-        field_name='data',
+        field_name='date',
         lookup_expr='gt',
         widget=DateTimeInput(attrs={'type': 'datetime-local'}),
         label=pgettext_lazy('Опубликовано после', 'Published after'),
@@ -40,7 +40,7 @@ class ResponseFilter(FilterSet):
     )
 
     added_after = DateTimeFilter(
-        field_name='data',
+        field_name='date',
         lookup_expr='gt',
         widget=DateTimeInput(attrs={'type': 'datetime-local'}),
         label=pgettext_lazy('Опубликовано после', 'Published after'),
