@@ -40,23 +40,25 @@ class Response(models.Model):
 
     def new_response(self):
         mail = {
+            'to': [self.author.email.email],
             'subject': 'Вам пришёл отклик на объявление',
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
             'html': f'<b>{self.author.name}, оставил отклик: {self.text} на ваше объявление: {self.post.title}</b>',
-            'to': [self.author.email.email],
         }
         mail_sender.delay(mail)
+        # mail_sender(mail)
 
     def accept_response(self):
         mail = {
+            'to': [self.author.email.email],
             'subject': 'Ваш отклик был принят!',
             'text': f'{self.author.name}, ваш отклик был принят!',
             'html': (
                 f'<b>{self.author.name}, ваш отклик: {self.text} на статью: {self.post.title} был принят!</b>'
             ),
-            'to': [self.author.email.email],
         }
         mail_sender.delay(mail)
+        # mail_sender(mail)
 
 
 class Category(models.Model):

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'allauth.socialaccount.providers.google',
     'forum',
     'accounts',
 ]
@@ -147,7 +148,7 @@ MANAGERS = (
     ('Qwe', 'BarsikSpam@yandex.ru'),
 )
 ADMINS = (
-    ('Asd', 'higens9216@yandex.ru'),
+    ('Asd', 'BarsikSpam@yandex.ru'),
 )
 
 CELERY_BROKER_URL = 'redis://default:ZYvAEASCaEZuBSU4t1Huq4fKJf50IjAN@redis-15647.c14.us-east-1-3.ec2.cloud.redislabs.com:15647'
