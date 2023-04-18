@@ -9,8 +9,3 @@ def mail_sender(mail):
     )
     msg.attach_alternative(mail.get('html'), "text/html")
     msg.send()
-
-
-@shared_task
-def post_created(instance_id):
-    pass

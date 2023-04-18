@@ -11,6 +11,19 @@ class FUser(models.Model):
     email = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='', blank=True)
 
+    def new_user(self):
+        mail = {
+            'to': [self.email.email],
+            'subject': 'Добро пожаловать на 127.0.0.1:8000!',
+            'text': f'Добро пожаловать на 127.0.0.1:8000!',
+            'html': f'Добро пожаловать на <a href="http://127.0.0.1:8000/">сайт</a>!',
+        }
+        mail_sender.delay(mail)
+        # mail_sender(mail)
+
+    def __str__(self):
+        return f'{self.name}: {self.email.email}'
+
 
 class Post(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE)
@@ -23,8 +36,8 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
 
-    # def __str__(self):
-    #     return f'{self.title}: {self.text}'
+    def __str__(self):
+        return f'{self.author.name}: {self.title}'
 
 
 class Response(models.Model):
@@ -43,7 +56,7 @@ class Response(models.Model):
             'to': [self.author.email.email],
             'subject': 'Вам пришёл отклик на объявление',
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
-            'html': f'<b>{self.author.name}, оставил отклик: {self.text} на ваше объявление: {self.post.title}</b>',
+            'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}<br>на ваше объявление:<br>{self.post.title}',
         }
         mail_sender.delay(mail)
         # mail_sender(mail)
@@ -54,11 +67,14 @@ class Response(models.Model):
             'subject': 'Ваш отклик был принят!',
             'text': f'{self.author.name}, ваш отклик был принят!',
             'html': (
-                f'<b>{self.author.name}, ваш отклик: {self.text} на статью: {self.post.title} был принят!</b>'
+                f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text}<br>на статью:<br>{self.post.title}<br><b>был принят!</b>'
             ),
         }
         mail_sender.delay(mail)
         # mail_sender(mail)
+
+    def __str__(self):
+        return f'{self.author} {self.data}'
 
 
 class Category(models.Model):

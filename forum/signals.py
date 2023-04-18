@@ -9,5 +9,6 @@ def new_user(instance, **kwargs):
     try:
         fuser = FUser(email=instance.user, name='User', avatar='default_avatar.jpg')
         fuser.save()
+        FUser.new_user(fuser)
     except:
         pass
