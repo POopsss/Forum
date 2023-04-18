@@ -4,9 +4,9 @@
 {% endblock title %}
 
 {% block content %}
-{#    {{ user.email.email }}#}
     <img src="/media/{{ user.avatar }}" class="rounded-circle" width="30" height="30"/>
     {{ user.name }}
+    {{ user.email.email }}
     <form action="" method="post" enctype="multipart/form-data">
         Изменить Аватар
         {% csrf_token %}

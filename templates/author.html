@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+
+<img src="/media/{{ author.avatar }}" class="rounded-circle" width="30" height="30"/>
+<b>{{ author.name }}</b>
+<br>
+<b>Объявления:</b>
+<hr>
+{% for post in post %}
+    <small class="card-subtitle">{{ post.date }}</small>
+    <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>
+    <p>{{ post.text|censor|striptags|truncatechars:128 }}</p>
+    <small class="card-subtitle">Категории: {% for category in post.category.all %}{{ category }} {% endfor %}</small>
+    <br>
+    <hr>
+{% endfor %}
+{% endblock content %}

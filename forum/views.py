@@ -3,7 +3,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from forum.models import *
 from forum.forms import ResponseForm, PostForm
 from .filters import PostFilter
-from .tasks import *
 
 
 class PostList(ListView):
@@ -56,7 +55,6 @@ class PostCreate(CreateView):
 
     def get(self, request, *args, **kwargs):
         context = super().get(self, request, *args, **kwargs)
-        # print(request.user.perms)
         if request.user.is_anonymous:
             return redirect('main')
         return context
@@ -82,3 +80,16 @@ class PostUpdate(UpdateView):
         post = form.save(commit=False)
         post.author = FUser.objects.get(email=self.request.user)
         return super().form_valid(form)
+
+
+class AuthorDetail(DetailView):
+    model = FUser
+    template_name = 'author.html'
+    context_object_name = 'author'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = Post.objects.all().filter(author=kwargs.get('object'))
+        return context
+
+

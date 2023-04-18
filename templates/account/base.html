@@ -18,10 +18,14 @@
       <nav>
         <div id="menu_container">
           <ul class="sf-menu" id="nav">
+            {% if user.is_superuser %}
             <li><a href="/admin/">Админка</a></li>
+            {% endif %}
             <li><a href="/">Главная</a></li>
+            {% if request.user.is_authenticated %}
             <li><a href="/create/">Создать объявление</a></li>
-            <li><a href="/user/">Личный кабинет</a></li>
+            {% endif %}
+            <li><a href="/user/">Пользователь</a></li>
           </ul>
         </div>
       </nav>

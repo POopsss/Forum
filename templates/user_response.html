@@ -7,6 +7,8 @@
 
 {% block content %}
 
+<a href="http://127.0.0.1:8000/user/accept_response/">Принятые отклики</a>
+
 <form action="" method="get">
     {{ get_filter.form.as_p }}
     <input type="submit" value="Найти" />
@@ -23,7 +25,6 @@
                     {{ response.author.name }}
                     {{ response.date }}
                     {{ response.text|safe }}
-                    {{ response.post }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
                 </td>
                 <td>
@@ -52,7 +53,6 @@
                     {{ response.author.name }}
                     {{ response.date }}
                     {{ response.text|safe }}
-                    {{ response.id }}
                     <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
                 </td>
                 <td>

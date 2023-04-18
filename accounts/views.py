@@ -1,12 +1,9 @@
 from django.core.files.storage import FileSystemStorage
-from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import redirect, render
 from forum.models import FUser, Post, Response
 from .forms import UserForm
 from django.core.paginator import Paginator
 from forum.filters import PostFilter, ResponseFilter
-from forum.tasks import *
-from django.contrib.auth.models import User
 
 
 def user(request):
@@ -50,7 +47,7 @@ def user_post(request):
             if request.GET.get('added_after'):
                 filter = request.GET.get('added_after')
                 post = post.filter(date__gt=filter)
-        paginator = Paginator(post.order_by('-date'), 3)
+        paginator = Paginator(post.order_by('-date'), 10)
         page_number = request.GET.get('page')
         post = paginator.get_page(page_number)
         context = {
@@ -72,6 +69,7 @@ def user_response(request):
         post = Post.objects.all().filter(author=fuser)
         new_response = Response.objects.all().filter(post__in=post, new=False, accept=False)
         response = Response.objects.all().filter(post__in=post, new=True, accept=False)
+
         get_filter = ResponseFilter(request.GET, response)
         if request.GET:
             if request.GET.get('author'):
@@ -84,7 +82,7 @@ def user_response(request):
                 filter = request.GET.get('added_after')
                 response = response.filter(date__gt=filter)
 
-        response = Paginator(response.order_by('-date'), 3).get_page(request.GET.get('page'))
+        response = Paginator(response.order_by('-date'), 10).get_page(request.GET.get('page'))
         for i in new_response:
             i.new = True
             i.save()
@@ -106,3 +104,36 @@ def user_response(request):
         if request.POST.get('posttype') == 'delete':
             Response.objects.get(id=request.POST.get('post')).delete()
             return redirect('user_response')
+
+
+def accept_response(request):
+    template_name = "accept_response.html"
+    if request.user.is_anonymous:
+        return redirect('/accounts/login/')
+    if request.method == 'GET':
+        fuser = FUser.objects.get(email=request.user)
+        post = Post.objects.all().filter(author=fuser)
+        response = Response.objects.all().filter(post__in=post, accept=True)
+
+        get_filter = ResponseFilter(request.GET, response)
+        if request.GET.get('author'):
+            filter = request.GET.get('author')
+            response = response.filter(author__name__icontains=filter)
+        if request.GET.get('post'):
+            filter = request.GET.get('post')
+            response = response.filter(post__title__icontains=filter)
+        if request.GET.get('added_after'):
+            filter = request.GET.get('added_after')
+            response = response.filter(date__gt=filter)
+
+        response = Paginator(response.order_by('-date'), 10).get_page(request.GET.get('page'))
+        context = {
+            'user': fuser,
+            'response': response,
+            'get_filter': get_filter,
+        }
+        return render(request, template_name, context)
+    elif request.method == 'POST':
+        if request.POST.get('posttype') == 'delete':
+            Response.objects.get(id=request.POST.get('post')).delete()
+            return redirect('accept_response')

@@ -18,7 +18,7 @@
     {% for post in list %}
         <p>
             <img src="/media/{{ post.author.avatar }}" class="rounded-circle" width="30" height="30"/>
-            <b>{{ post.author.name }}</b><br>
+            <b><a href="author/{{ post.author.id }}/">{{ post.author.name }}</a></b><br>
             {{ post.date }}
             Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></td>
         </p>

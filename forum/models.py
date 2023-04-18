@@ -31,7 +31,6 @@ class Post(models.Model):
     title = models.TextField(max_length=128)
     text = FroalaField(theme='dark')
     category = models.ManyToManyField('Category', through='PostCategory')
-    rating = models.FloatField(default=0)
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
@@ -56,7 +55,7 @@ class Response(models.Model):
             'to': [self.author.email.email],
             'subject': 'Вам пришёл отклик на объявление',
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
-            'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}<br>на ваше объявление:<br>{self.post.title}',
+            'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}на ваше объявление:<br>{self.post.title}',
         }
         mail_sender.delay(mail)
         # mail_sender(mail)
@@ -67,7 +66,7 @@ class Response(models.Model):
             'subject': 'Ваш отклик был принят!',
             'text': f'{self.author.name}, ваш отклик был принят!',
             'html': (
-                f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text}<br>на статью:<br>{self.post.title}<br><b>был принят!</b>'
+                f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text} на статью:<br>{self.post.title}<br><b>был принят!</b>'
             ),
         }
         mail_sender.delay(mail)

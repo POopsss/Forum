@@ -6,7 +6,6 @@ from django import forms
 class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
-        FUser.new_user(user)
         return user
 
 

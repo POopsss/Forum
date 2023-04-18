@@ -21,4 +21,5 @@ urlpatterns = [
     path('post/<pk>/', PostDetail.as_view(), name='post_detail'),
     path('create/', PostCreate.as_view(), name='post_create'),
     path('post/update/<pk>/', PostUpdate.as_view(), name='post_update'),
+    path('author/<pk>/', AuthorDetail.as_view(), name='author'),
 ]

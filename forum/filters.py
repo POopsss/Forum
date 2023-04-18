@@ -1,20 +1,19 @@
 from django_filters import FilterSet, ModelMultipleChoiceFilter, DateTimeFilter, Filter, CharFilter
 from .models import Category
 from django.forms import DateTimeInput
-from django.utils.translation import pgettext_lazy
 
 
 class PostFilter(FilterSet):
     title = Filter(
         field_name='title',
         lookup_expr='icontains',
-        label=pgettext_lazy('Поиск в названии статьи', 'Search in the title'),
+        label='Поиск в названии статьи',
     )
 
     category = ModelMultipleChoiceFilter(
         field_name='postcategory__category',
         queryset=Category.objects.all(),
-        label=pgettext_lazy('Категории', 'Category'),
+        label='Категории',
         conjoined=True,
     )
 
@@ -22,7 +21,7 @@ class PostFilter(FilterSet):
         field_name='date',
         lookup_expr='gt',
         widget=DateTimeInput(attrs={'type': 'datetime-local'}),
-        label=pgettext_lazy('Опубликовано после', 'Published after'),
+        label='Опубликовано после',
     )
 
 
@@ -30,18 +29,18 @@ class ResponseFilter(FilterSet):
     author = CharFilter(
         field_name='author__name',
         lookup_expr='icontains',
-        label=pgettext_lazy('От кого', 'From'),
+        label='От кого',
     )
 
     post = Filter(
         field_name='post__title',
         lookup_expr='icontains',
-        label=pgettext_lazy('Объявление', 'Post'),
+        label='Объявление',
     )
 
     added_after = DateTimeFilter(
         field_name='date',
         lookup_expr='gt',
         widget=DateTimeInput(attrs={'type': 'datetime-local'}),
-        label=pgettext_lazy('Опубликовано после', 'Published after'),
+        label='Опубликовано после',
     )
