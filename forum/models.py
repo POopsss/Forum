@@ -18,7 +18,7 @@ class FUser(models.Model):
             'text': f'Добро пожаловать на 127.0.0.1:8000!',
             'html': f'Добро пожаловать на <a href="http://127.0.0.1:8000/">сайт</a>!',
         }
-        mail_sender.delay(mail)
+        # mail_sender.delay(mail)
         # mail_sender(mail)
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Response(models.Model):
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
             'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}<br>на ваше объявление:<br>{self.post.title}',
         }
-        mail_sender.delay(mail)
+        # mail_sender.delay(mail)
         # mail_sender(mail)
 
     def accept_response(self):
@@ -70,7 +70,7 @@ class Response(models.Model):
                 f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text}<br>на статью:<br>{self.post.title}<br><b>был принят!</b>'
             ),
         }
-        mail_sender.delay(mail)
+        # mail_sender.delay(mail)
         # mail_sender(mail)
 
     def __str__(self):
