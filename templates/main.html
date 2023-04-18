@@ -23,7 +23,7 @@
             Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></td>
         </p>
         <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>
-        <p>{{ post.text|censor|striptags|truncatechars:128 }}</p>
+        <p>{{ post.text|no_img|striptags|truncatechars:128 }}</p>
         <hr><hr>
     {% endfor %}
 

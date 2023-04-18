@@ -1,7 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
 {% load custom_filters %}
-{% load custom_tags %}
 
 {% block content %}
 
@@ -13,7 +12,7 @@
 {% for post in post %}
     <small class="card-subtitle">{{ post.date }}</small>
     <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>
-    <p>{{ post.text|censor|striptags|truncatechars:128 }}</p>
+    <p>{{ post.text|no_img|striptags|truncatechars:128 }}</p>
     <small class="card-subtitle">Категории: {% for category in post.category.all %}{{ category }} {% endfor %}</small>
     <br>
     <hr>
