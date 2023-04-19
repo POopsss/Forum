@@ -1,9 +1,9 @@
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
-from forum.models import FUser, Post, Response
+from forum.models import FUser, Post, Reply
 from .forms import UserForm
 from django.core.paginator import Paginator
-from forum.filters import PostFilter, ResponseFilter
+from forum.filters import PostFilter, ReplyFilter
 
 
 def user(request):
@@ -58,82 +58,83 @@ def user_post(request):
         return render(request, template_name, context)
     elif request.method == 'POST':
         Post.objects.get(id=request.POST.get('post')).delete()
+        return redirect('user_post')
 
 
-def user_response(request):
-    template_name = "user_response.html"
+def user_reply(request):
+    template_name = "user_reply.html"
     if request.user.is_anonymous:
         return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)
-        new_response = Response.objects.all().filter(post__in=post, new=False, accept=False)
-        response = Response.objects.all().filter(post__in=post, new=True, accept=False)
+        new_reply = Reply.objects.all().filter(post__in=post, new=False, accept=False)
+        reply = Reply.objects.all().filter(post__in=post, new=True, accept=False)
 
-        get_filter = ResponseFilter(request.GET, response)
+        get_filter = ReplyFilter(request.GET, reply)
         if request.GET:
             if request.GET.get('author'):
                 filter = request.GET.get('author')
-                response = response.filter(author__name__icontains=filter)
+                reply = reply.filter(author__name__icontains=filter)
             if request.GET.get('post'):
                 filter = request.GET.get('post')
-                response = response.filter(post__title__icontains=filter)
+                reply = reply.filter(post__title__icontains=filter)
             if request.GET.get('added_after'):
                 filter = request.GET.get('added_after')
-                response = response.filter(date__gt=filter)
+                reply = reply.filter(date__gt=filter)
 
-        response = Paginator(response.order_by('-date'), 10).get_page(request.GET.get('page'))
-        for i in new_response:
+        reply = Paginator(reply.order_by('-date'), 10).get_page(request.GET.get('page'))
+        for i in new_reply:
             i.new = True
             i.save()
         context = {
             'user': fuser,
-            'new_response': new_response,
-            'response': response,
+            'new_reply': new_reply,
+            'reply': reply,
             'get_filter': get_filter,
         }
         return render(request, template_name, context)
     elif request.method == 'POST':
         if request.POST.get('posttype') == 'accept':
-            response = Response.objects.get(id=request.POST.get('post'))
-            response.accept = True
-            response.save()
-            Response.accept_response(response)
+            reply = Reply.objects.get(id=request.POST.get('post'))
+            reply.accept = True
+            reply.save()
+            Reply.accept_reply(reply)
 
-            return redirect('user_response')
+            return redirect('user_reply')
         if request.POST.get('posttype') == 'delete':
-            Response.objects.get(id=request.POST.get('post')).delete()
-            return redirect('user_response')
+            Reply.objects.get(id=request.POST.get('post')).delete()
+            return redirect('user_reply')
 
 
-def accept_response(request):
-    template_name = "accept_response.html"
+def accept_reply(request):
+    template_name = "accept_reply.html"
     if request.user.is_anonymous:
         return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)
-        response = Response.objects.all().filter(post__in=post, accept=True)
+        reply = Reply.objects.all().filter(post__in=post, accept=True)
 
-        get_filter = ResponseFilter(request.GET, response)
+        get_filter = ReplyFilter(request.GET, reply)
         if request.GET.get('author'):
             filter = request.GET.get('author')
-            response = response.filter(author__name__icontains=filter)
+            reply = reply.filter(author__name__icontains=filter)
         if request.GET.get('post'):
             filter = request.GET.get('post')
-            response = response.filter(post__title__icontains=filter)
+            reply = reply.filter(post__title__icontains=filter)
         if request.GET.get('added_after'):
             filter = request.GET.get('added_after')
-            response = response.filter(date__gt=filter)
+            reply = reply.filter(date__gt=filter)
 
-        response = Paginator(response.order_by('-date'), 10).get_page(request.GET.get('page'))
+        reply = Paginator(reply.order_by('-date'), 10).get_page(request.GET.get('page'))
         context = {
             'user': fuser,
-            'response': response,
+            'reply': reply,
             'get_filter': get_filter,
         }
         return render(request, template_name, context)
     elif request.method == 'POST':
         if request.POST.get('posttype') == 'delete':
-            Response.objects.get(id=request.POST.get('post')).delete()
-            return redirect('accept_response')
+            Reply.objects.get(id=request.POST.get('post')).delete()
+            return redirect('accept_reply')

@@ -39,7 +39,7 @@ class Post(models.Model):
         return f'{self.author.name}: {self.title}'
 
 
-class Response(models.Model):
+class Reply(models.Model):
     author = models.ForeignKey('FUser', on_delete=models.CASCADE, unique=False)
     post = models.ForeignKey('Post', on_delete=models.CASCADE, unique=False)
     date = models.DateTimeField(auto_now_add=True)
@@ -50,7 +50,7 @@ class Response(models.Model):
     class Meta:
         ordering = ['-date']
 
-    def new_response(self):
+    def new_reply(self):
         mail = {
             'to': [self.author.email.email],
             'subject': 'Вам пришёл отклик на объявление',
@@ -60,7 +60,7 @@ class Response(models.Model):
         mail_sender.delay(mail)
         # mail_sender(mail)
 
-    def accept_response(self):
+    def accept_reply(self):
         mail = {
             'to': [self.author.email.email],
             'subject': 'Ваш отклик был принят!',

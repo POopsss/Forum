@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from forum.models import *
-from forum.forms import ResponseForm, PostForm
+from forum.forms import ReplyForm, PostForm
 from .filters import PostFilter
 
 
@@ -32,16 +32,16 @@ class PostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['response'] = ResponseForm
+        context['reply'] = ReplyForm
         return context
 
     def post(self, request, *args, **kwargs):
         user = FUser.objects.get(email_id=request.user.id)
         post = Post.objects.get(id=kwargs.get('pk'))
 
-        if request.POST.get('posttype') == 'response':
+        if request.POST.get('posttype') == 'reply':
             text = request.POST.get('text')
-            form = ResponseForm({'author': user, 'post': post, 'text': text})
+            form = ReplyForm({'author': user, 'post': post, 'text': text})
             if form.is_valid():
                 form.save()
 

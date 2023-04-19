@@ -22,9 +22,9 @@
         {% csrf_token %}
         <p>
         <h1>
-            {{ response.media }}
-            {{ response.text }}
-            <input type="hidden" id="posttype" name="posttype" value="response" />
+            {{ reply.media }}
+            {{ reply.text }}
+            <input type="hidden" name="posttype" value="reply" />
         </h1>
         </p>
         <p><input type="submit" value="Оставить отклик"></p>

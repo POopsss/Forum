@@ -25,7 +25,7 @@ class PostFilter(FilterSet):
     )
 
 
-class ResponseFilter(FilterSet):
+class ReplyFilter(FilterSet):
     author = CharFilter(
         field_name='author__name',
         lookup_expr='icontains',

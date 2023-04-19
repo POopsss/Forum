@@ -4,18 +4,18 @@ from django import forms
 from .models import *
 
 
-class ResponseForm(forms.ModelForm):
+class ReplyForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
 
     class Meta:
-        model = Response
+        model = Reply
         fields = '__all__'
 
     def save(self):
-        response = super().save(self)
-        Response.new_response(response)
+        reply = super().save(self)
+        Reply.new_reply(reply)
 
-        return response
+        return reply
 
 
 class PostForm(forms.ModelForm):

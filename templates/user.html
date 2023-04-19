@@ -11,7 +11,7 @@
         Изменить Аватар
         {% csrf_token %}
         {{ user_form.avatar }}
-        <input type="hidden" id="posttype" name="posttype" value="avatar" />
+        <input type="hidden" name="posttype" value="avatar" />
         <input type="submit" value="Загрузить" />
     </form>
 
@@ -19,11 +19,11 @@
         {% csrf_token %}
         Изменить никнейм
         {{ user_form.name }}
-        <input type="hidden" id="posttype" name="posttype" value="name" />
-        <input type="submit" value="Save" />
+        <input type="hidden" name="posttype" value="name" />
+        <input type="submit" value="Изменить" />
     </form>
             <li><a href="/accounts/logout/">Выйти</a></li>
             <li><a href="/user/post/">Пост</a></li>
-            <li><a href="/user/response/">Отклики</a></li>
+            <li><a href="/user/reply/">Отклики</a></li>
 
 {% endblock content %}

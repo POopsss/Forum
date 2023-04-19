@@ -1,0 +1,57 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+
+<a href="http://127.0.0.1:8000/user/reply/">Новые отклики</a>
+
+<form action="" method="get">
+    {{ get_filter.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+    <table>
+        {% for reply in reply %}
+            <tr>
+                <td>
+                    <img src="/media/{{ reply.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+                    {{ reply.author.name }}
+                    {{ reply.date }}
+                    {{ reply.text|safe }}
+                    <a href="http://127.0.0.1:8000/post/{{ reply.post.id }}/">{{ reply.post.title }}</a>
+                </td>
+                <td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="post" name="post" value={{ reply.id }} />
+                        <input type="hidden" id="posttype" name="posttype" value="delete" />
+                        <input type="submit" value="Удалить" />
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+   {% if reply.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if reply.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=reply.previous_page_number %}">{{ reply.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ reply.number }}
+
+   {% if reply.has_next %}
+       <a href="?{% url_replace page=reply.next_page_number %}">{{ reply.next_page_number }}</a>
+       {% if reply.paginator.num_pages != reply.next_page_number %}
+           ...
+           <a href="?page={{ reply.paginator.num_pages }}">{{ reply.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

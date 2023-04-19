@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<a href="http://127.0.0.1:8000/user/accept_response/">Принятые отклики</a>
+<a href="http://127.0.0.1:8000/user/accept_reply/">Принятые отклики</a>
 
 <form action="" method="get">
     {{ get_filter.form.as_p }}
@@ -15,28 +15,28 @@
 </form>
 
 
-    {% if new_response %}
+    {% if new_reply %}
     Новые отклики
     <table>
-        {% for response in new_response %}
+        {% for reply in new_reply %}
             <tr>
                 <td>
-                    <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
-                    {{ response.author.name }}
-                    {{ response.date }}
-                    {{ response.text|safe }}
-                    <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
+                    <img src="/media/{{ reply.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+                    {{ reply.author.name }}
+                    {{ reply.date }}
+                    {{ reply.text|safe }}
+                    <a href="http://127.0.0.1:8000/post/{{ reply.post.id }}/">{{ reply.post.title }}</a>
                 </td>
                 <td>
                     <form action="" method="post">
                         {% csrf_token %}
-                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="post" name="post" value={{ reply.id }} />
                         <input type="hidden" id="posttype" name="posttype" value="accept" />
                         <input type="submit" value="Принять" />
                     </form>
                     <form action="" method="post">
                         {% csrf_token %}
-                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="post" name="post" value={{ reply.id }} />
                         <input type="hidden" id="posttype" name="posttype" value="delete" />
                         <input type="submit" value="Удалить" />
                     </form>
@@ -46,25 +46,25 @@
     </table>
     {% endif %}
     <table>
-        {% for response in response %}
+        {% for reply in reply %}
             <tr>
                 <td>
-                    <img src="/media/{{ response.author.avatar }}" class="rounded-circle" width="30" height="30"/>
-                    {{ response.author.name }}
-                    {{ response.date }}
-                    {{ response.text|safe }}
-                    <a href="http://127.0.0.1:8000/post/{{ response.post.id }}/">{{ response.post.title }}</a>
+                    <img src="/media/{{ reply.author.avatar }}" class="rounded-circle" width="30" height="30"/>
+                    {{ reply.author.name }}
+                    {{ reply.date }}
+                    {{ reply.text|safe }}
+                    <a href="http://127.0.0.1:8000/post/{{ reply.post.id }}/">{{ reply.post.title }}</a>
                 </td>
                 <td>
                     <form action="" method="post">
                         {% csrf_token %}
-                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="post" name="post" value={{ reply.id }} />
                         <input type="hidden" id="posttype" name="posttype" value="accept" />
                         <input type="submit" value="Принять" />
                     </form>
                     <form action="" method="post">
                         {% csrf_token %}
-                        <input type="hidden" id="post" name="post" value={{ response.id }} />
+                        <input type="hidden" id="post" name="post" value={{ reply.id }} />
                         <input type="hidden" id="posttype" name="posttype" value="delete" />
                         <input type="submit" value="Удалить" />
                     </form>
@@ -73,21 +73,21 @@
         {% endfor %}
     </table>
 
-   {% if response.has_previous %}
+   {% if reply.has_previous %}
        <a href="?{% url_replace page=1 %}">1</a>
-       {% if response.previous_page_number != 1 %}
+       {% if reply.previous_page_number != 1 %}
            ...
-           <a href="?{% url_replace page=response.previous_page_number %}">{{ response.previous_page_number }}</a>
+           <a href="?{% url_replace page=reply.previous_page_number %}">{{ reply.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 
-   {{ response.number }}
+   {{ reply.number }}
 
-   {% if response.has_next %}
-       <a href="?{% url_replace page=response.next_page_number %}">{{ response.next_page_number }}</a>
-       {% if response.paginator.num_pages != response.next_page_number %}
+   {% if reply.has_next %}
+       <a href="?{% url_replace page=reply.next_page_number %}">{{ reply.next_page_number }}</a>
+       {% if reply.paginator.num_pages != reply.next_page_number %}
            ...
-           <a href="?page={{ response.paginator.num_pages }}">{{ response.paginator.num_pages }}</a>
+           <a href="?page={{ reply.paginator.num_pages }}">{{ reply.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
 

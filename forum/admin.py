@@ -20,8 +20,8 @@ class PostAdmin(admin.ModelAdmin):
                    )
 
 
-@admin.register(Response)
-class ResponseAdmin(admin.ModelAdmin):
+@admin.register(Reply)
+class ReplyAdmin(admin.ModelAdmin):
     list_display = (
         'author', 'post', 'date',
     )
@@ -42,6 +42,7 @@ class FUserAdmin(admin.ModelAdmin):
     list_display = (
         'name', 'email_fk',
     )
+
 
 admin.site.register(Category)
 admin.site.register(PostCategory)
