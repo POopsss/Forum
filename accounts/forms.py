@@ -1,12 +1,5 @@
-from allauth.account.forms import SignupForm
 from forum.models import FUser
 from django import forms
-
-
-class CustomSignupForm(SignupForm):
-    def save(self, request):
-        user = super().save(request)
-        return user
 
 
 class UserForm(forms.ModelForm):

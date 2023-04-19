@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
 from forum.models import FUser, Post, Reply
@@ -6,10 +7,9 @@ from django.core.paginator import Paginator
 from forum.filters import PostFilter, ReplyFilter
 
 
+@login_required
 def user(request):
     template_name = "user.html"
-    if request.user.is_anonymous:
-        return redirect('/accounts/login/')
     fuser = FUser.objects.get(email=request.user)
     if request.method == 'GET':
         context = {
@@ -29,10 +29,9 @@ def user(request):
         return redirect('user')
 
 
+@login_required
 def user_post(request):
     template_name = "user_post.html"
-    if request.user.is_anonymous:
-        return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)
@@ -61,10 +60,9 @@ def user_post(request):
         return redirect('user_post')
 
 
+@login_required
 def user_reply(request):
     template_name = "user_reply.html"
-    if request.user.is_anonymous:
-        return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)
@@ -107,10 +105,9 @@ def user_reply(request):
             return redirect('user_reply')
 
 
+@login_required
 def accept_reply(request):
     template_name = "accept_reply.html"
-    if request.user.is_anonymous:
-        return redirect('/accounts/login/')
     if request.method == 'GET':
         fuser = FUser.objects.get(email=request.user)
         post = Post.objects.all().filter(author=fuser)

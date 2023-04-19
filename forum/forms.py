@@ -19,9 +19,15 @@ class ReplyForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
-    title = forms.CharField()
+    title = forms.CharField(label='Заголовок')
     category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), label='Категории')
 
     class Meta:
         model = Post
         fields = ('title', 'category', 'text',)
+
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        self.fields['text'].label = 'Содержание'
+
+

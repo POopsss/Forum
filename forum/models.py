@@ -55,7 +55,8 @@ class Reply(models.Model):
             'to': [self.author.email.email],
             'subject': 'Вам пришёл отклик на объявление',
             'text': f'{self.author.name}, оставил отклик на ваше объявление: {self.text}',
-            'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}на ваше объявление:<br>{self.post.title}',
+            'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}на ваше объявление:<br>{self.post.title}<br>'
+                    f'Перейдите по <a href="http://127.0.0.1:8000/user/reply/">ссылке</a> что-бы посмотреть отклики',
         }
         mail_sender.delay(mail)
         # mail_sender(mail)

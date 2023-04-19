@@ -55,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'game_forum.urls'
@@ -118,6 +119,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_collect/')
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -130,14 +134,13 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.msndr.net'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'BarsikSpam@yandex.ru'
-EMAIL_HOST_PASSWORD = "qkegfyevntenrfdm"
+EMAIL_HOST_USER = 'barsikspam@yandex.ru'
+EMAIL_HOST_PASSWORD = '86b388a4fd35411c89abf4e831a35911'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 

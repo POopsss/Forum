@@ -13,21 +13,27 @@
     <input type="submit" value="Найти" />
 </form>
 
+<table>
     {% for post in user_post %}
-        <p>
+    <tr>
+        <td>
             {{ post.date }}
-            Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small></td>
-        </p>
-        <p><a href="post/{{ post.id }}/">{{ post.title|truncatechars:50 }}</a></p>
-        <p>{{ post.text|striptags|truncatechars:128 }}</p>
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="post" value={{ post.id }} />
-            <input type="hidden" name="posttype" value="delete" />
-            <input type="submit" value="Удалить" />
-        </form>
-        <hr><hr>
+            Категории: <small class="card-subtitle">{% for category in post.category.all %}{{ category }} {% endfor %}</small><br>
+            Заголовок: <a href='http://127.0.0.1:8000/post/{{ post.id }}/'>{{ post.title|truncatechars:50 }}</a><br>
+            {{ post.text|striptags|truncatechars:128 }}
+        </td>
+        <td>
+            <a href='http://127.0.0.1:8000/post/update/{{ post.id }}/'>Изменить</a>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="post" value={{ post.id }} />
+                <input type="hidden" name="posttype" value="delete" />
+                <input type="submit" value="Удалить" />
+            </form>
+        </td>
+    </tr>
     {% endfor %}
+</table>
 
    {% if user_post.has_previous %}
        <a href="?{% url_replace page=1 %}">1</a>
