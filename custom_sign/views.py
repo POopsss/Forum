@@ -15,7 +15,6 @@ def register(request):
     context = {
         'form': form
     }
-    my_job()
     if request.method == 'POST':
         try:
             form = CustomUserCreationForm(request.POST)
