@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from forum.filters import PostFilter, ReplyFilter
 
 
-@login_required
+@login_required(login_url='/account/signin/')
 def user(request):
     template_name = "user.html"
     fuser = FUser.objects.get(email=request.user)
@@ -29,7 +29,7 @@ def user(request):
         return redirect('user')
 
 
-@login_required
+@login_required(login_url='/account/signin/')
 def user_post(request):
     template_name = "user_post.html"
     if request.method == 'GET':
@@ -60,7 +60,7 @@ def user_post(request):
         return redirect('user_post')
 
 
-@login_required
+@login_required(login_url='/account/signin/')
 def user_reply(request):
     template_name = "user_reply.html"
     if request.method == 'GET':
@@ -105,7 +105,7 @@ def user_reply(request):
             return redirect('user_reply')
 
 
-@login_required
+@login_required(login_url='/account/signin/')
 def accept_reply(request):
     template_name = "accept_reply.html"
     if request.method == 'GET':

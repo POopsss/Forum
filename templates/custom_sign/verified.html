@@ -1,0 +1,13 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="number" name="password" min="100000" max="999999">
+        <input type="submit" value="Подтвердить">
+    </form>
+
+{% endblock content %}

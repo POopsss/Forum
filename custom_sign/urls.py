@@ -13,21 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-
-from django.conf.urls.static import static
-from game_forum import settings
+from django.urls import path
+from .views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('user/', include('accounts.urls')),
-    path('accounts/', include('allauth.urls')),
-    path('account/', include('custom_sign.urls')),
-    path('ckeditor5/', include('django_ckeditor_5.urls')),
-    path('froala_editor/', include('froala_editor.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('', include('forum.urls')),
+    path('signup/', register, name='signup'),
+    path('verified/', verified, name='verified'),
+    path('signin/', signin, name='signin'),
 ]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
