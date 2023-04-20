@@ -4,10 +4,21 @@
 {% endblock title %}
 
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="number" name="password" min="100000" max="999999">
-        <input type="submit" value="Подтвердить">
-    </form>
-
+<h5>{{ ver }}</h5>
+<form action="" method="POST">
+    <h1>Введите код потверждения:
+    {% csrf_token %}
+    <input type="number" name="password" min="100000" max="999999">
+    <input type="hidden" name="posttype" value="ver" />
+    <input type="submit" value="Подтвердить">
+    </h1>
+</form>
+<h5>{{ error }}</h5>
+<form action="" method="POST">
+    <h5>Отправить письмо ещё раз:
+    {% csrf_token %}
+    <input type="hidden" name="posttype" value="mail" />
+    <input type="submit" value="Отправить">
+    </h5>
+</form>
 {% endblock content %}

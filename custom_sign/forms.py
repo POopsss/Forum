@@ -6,7 +6,7 @@ from allauth.account.models import EmailAddress
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(label='Почта')
+    email = forms.EmailField(label='Email')
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Подтвердите пароль', widget=forms.PasswordInput)
 
@@ -31,20 +31,18 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = User.objects.create_user(
-            username=self.cleaned_data['email'],
-            email=self.cleaned_data['email'],
-            password=self.cleaned_data['password1']
+            username=self.email_clean(),
+            email=self.email_clean(),
+            password=self.clean_password2()
         )
         return user
 
 
 class SignInForm(forms.ModelForm):
-    email = forms.EmailField(label='Почта')
+    email = forms.EmailField(label='Email')
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['email', 'password',
-                  # 'username'
-                  ]
+        fields = ['email', 'password']
 

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from froala_editor.fields import FroalaField
-from .tasks import mail_sender
+from .tasks import task_starter
 
 
 class FUser(models.Model):
@@ -18,8 +18,7 @@ class FUser(models.Model):
             'text': f'Добро пожаловать на 127.0.0.1:8000!',
             'html': f'Добро пожаловать на <a href="http://127.0.0.1:8000/">сайт</a>!',
         }
-        mail_sender.delay(mail)
-        # mail_sender(mail)
+        task_starter(mail)
 
     def __str__(self):
         return f'{self.name}: {self.email.email}'
@@ -58,8 +57,7 @@ class Reply(models.Model):
             'html': f'<b>{self.author.name}</b>, оставил отклик:<br>{self.text}на ваше объявление:<br>{self.post.title}<br>'
                     f'Перейдите по <a href="http://127.0.0.1:8000/user/reply/">ссылке</a> что-бы посмотреть отклики',
         }
-        mail_sender.delay(mail)
-        # mail_sender(mail)
+        task_starter(mail)
 
     def accept_reply(self):
         mail = {
@@ -70,8 +68,7 @@ class Reply(models.Model):
                 f'<b>{self.author.name}</b>, ваш отклик:<br>{self.text} на статью:<br>{self.post.title}<br><b>был принят!</b>'
             ),
         }
-        mail_sender.delay(mail)
-        # mail_sender(mail)
+        task_starter(mail)
 
     def __str__(self):
         return f'{self.author} {self.date}'

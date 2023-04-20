@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h5><a href="/account/signup/">Регистрация</a></h5>
+<h5><a href="/accounts/login/">Allauth</a></h5>
+<h1>Войти:</h1>
+{{ error }}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Войти">
+</form>
+
+{% endblock %}

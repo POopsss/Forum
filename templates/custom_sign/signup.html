@@ -4,10 +4,16 @@
 {% endblock title %}
 
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Зарегистрироваться">
-    </form>
+<h1>Регистрация:</h1>
+<h5>Уже зарегистрированы? <a href="/account/signin/">Войдите</a>.</h5>
+{% for exept in exept %}
+<h4>{{ exept }}</h4>
+{% endfor %}
+{{ error.password2 }}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Зарегистрироваться">
+</form>
 
 {% endblock content %}
