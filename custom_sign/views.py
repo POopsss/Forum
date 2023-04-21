@@ -6,7 +6,6 @@ from .forms import CustomUserCreationForm, SignInForm
 from allauth.account.models import EmailAddress
 from django.contrib.auth.models import User
 from .models import EmailVerified
-from forum.management.commands.runapscheduler import my_job
 
 
 def register(request):
