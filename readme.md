@@ -29,7 +29,7 @@
 * ## superuser
       user: Barsik
       password: qwe
-      email: qwe@qwe.qwe
+      email: qwe@qwe.com
 
 # Рассылка сообщений идёт через celery 
 * ## Запуск celery:
